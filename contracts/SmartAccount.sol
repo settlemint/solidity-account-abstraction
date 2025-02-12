@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts-community/contracts/account/Account.sol";
-import "@openzeppelin/contracts-community/contracts/account/AccountCore.sol";
+import "@openzeppelin/community-contracts/contracts/account/Account.sol";
+import "@openzeppelin/community-contracts/contracts/account/AccountCore.sol";
 
 contract SmartAccount is AccountCore, Account, Initializable, ReentrancyGuard {
     using ECDSA for bytes32;

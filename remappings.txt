@@ -3,3 +3,4 @@ forge-std/=lib/forge-std/src/
 hardhat/=node_modules/hardhat/
 @openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
 @openzeppelin/community-contracts/=lib/openzeppelin-community-contracts/contracts/
+account-abstraction/=lib/account-abstraction/contracts/
