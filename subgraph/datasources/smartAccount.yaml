@@ -1,0 +1,42 @@
+dataSources:
+  - kind: ethereum/contract
+    name: SmartAccountFactory
+    network: { { network } }
+    source:
+      address: "{{SmartAccountFactory.address}}"
+      abi: SmartAccountFactory
+      startBlock: { { SmartAccountFactory.startBlock } }
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SmartAccount
+        - SmartAccountFactory
+      abis:
+        - name: SmartAccountFactory
+          file: ./abis/SmartAccountFactory.json
+      eventHandlers:
+        - event: AccountCreated(indexed address,indexed address)
+          handler: handleAccountCreated
+      file: ./mappings/smartAccount.ts
+
+templates:
+  - kind: ethereum/contract
+    name: SmartAccount
+    network: { { network } }
+    source:
+      abi: SmartAccount
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SmartAccountTransaction
+      abis:
+        - name: SmartAccount
+          file: ./abis/SmartAccount.json
+      eventHandlers:
+        - event: TransactionExecuted(indexed address,uint256,bytes)
+          handler: handleTransactionExecuted
+      file: ./mappings/smartAccount.ts
