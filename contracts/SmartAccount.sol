@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/community-contracts/contracts/account/Account.sol";
-import "@openzeppelin/community-contracts/contracts/account/AccountCore.sol";
+import "@openzeppelin-contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin-contracts/proxy/utils/Initializable.sol";
+import "@openzeppelin-contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin-contracts/token/ERC20/IERC20.sol";
+import "openzeppelin-community-contracts/contracts/account/Account.sol";
+import "openzeppelin-community-contracts/contracts/account/AccountCore.sol";
 
 contract SmartAccount is Account, Initializable, ReentrancyGuard {
     using ECDSA for bytes32;

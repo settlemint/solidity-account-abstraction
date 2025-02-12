@@ -19,7 +19,7 @@
 [profile.default]
   src = 'contracts'
   out = 'out'
-  libs = ['node_modules', 'lib']
+  libs = ['node_modules', 'dependencies']
   test = 'test'
   cache_path  = 'cache_forge'
   solc = "0.8.27"
@@ -31,4 +31,11 @@
   extra_output_files = [ "metadata" ]
   viaIR = true
 
+[soldeer]
+remappings_version = false
 
+[dependencies]
+forge-std = "1.9.5"
+"@openzeppelin-contracts" = "5.2.0"
+account-abstraction = { version = "0.7.0", git = "https://github.com/eth-infinitism/account-abstraction" }
+openzeppelin-community-contracts = { version = "0.0.1", git = "https://github.com/OpenZeppelin/openzeppelin-community-contracts.git", rev = "e33f73d1957e46b9ed17c319ed607bb3c7137944" }
