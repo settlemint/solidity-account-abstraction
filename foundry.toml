@@ -1,8 +1,10 @@
 [profile.ci]
+  # CI-specific settings with more fuzz runs and verbose output
   fuzz = { runs = 10_000 }
   verbosity = 4
 
 [fmt]
+  # Formatting rules for forge fmt
   bracket_spacing = true
   int_types = "long"
   line_length = 120
@@ -13,10 +15,12 @@
   wrap_comments = true
 
 [rpc_endpoints]
+  # RPC endpoints for different networks
   anvil = "http://localhost:8545"
   btp = "${BTP_RPC_URL}"
 
 [profile.default]
+  # Default compilation and testing settings
   src = 'contracts'
   out = 'out'
   libs = ['node_modules', 'dependencies']
@@ -30,11 +34,15 @@
   auto_detect_solc = false
   extra_output_files = [ "metadata" ]
   viaIR = true
+  # Using paris EVM version to avoid Cancun-specific features
+  evm_version = "paris"
 
 [soldeer]
 remappings_version = false
 
 [dependencies]
-forge-std = "1.9.5"
-"@openzeppelin-contracts" = { version = "5.2.0", git = "https://github.com/OpenZeppelin/openzeppelin-contracts.git", branch = "master" }
-account-abstraction = { version = "0.7.0", git = "https://github.com/eth-infinitism/account-abstraction" }
+  # Core dependencies
+  forge-std = "1.9.5"
+  "@openzeppelin-contracts" = "5.2.0"
+  # Pinned to specific commit to avoid breaking changes, https://github.com/eth-infinitism/account-abstraction/commit/b3bae63bd9bc0ed394dfca8668008213127adb62 doesn't work on Paris (TransientSlot.sol)
+  account-abstraction = { version = "0.7.0", git = "https://github.com/eth-infinitism/account-abstraction", rev = "4b9a3ecfb63c3342218f2ba0226e19be16e022ac" }
