@@ -1,70 +1,111 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.24;
 
-import "@openzeppelin-contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin-contracts/proxy/utils/Initializable.sol";
-import "@openzeppelin-contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin-contracts/token/ERC20/IERC20.sol";
-import "openzeppelin-community-contracts/contracts/account/Account.sol";
-import "openzeppelin-community-contracts/contracts/account/AccountCore.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import "account-abstraction/core/BaseAccount.sol";
+import "account-abstraction/core/Helpers.sol";
+import "account-abstraction/samples/callback/TokenCallbackHandler.sol";
 
-contract SmartAccount is Account, Initializable, ReentrancyGuard {
+/**
+ * @title SmartAccount
+ * @dev Implementation of a simple ERC-4337 Account with ECDSA validation.
+ * Supports upgrades through UUPS proxy pattern and handles token callbacks.
+ */
+contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initializable {
     using ECDSA for bytes32;
 
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-    event TransactionExecuted(address indexed target, uint256 value, bytes data);
+    /// @notice The owner's address (signer that can execute transactions)
+    address public owner;
 
-    constructor() EIP712("SmartAccount", "1") { }
+    /// @notice The EntryPoint contract - the ERC-4337 singleton that executes UserOperations
+    IEntryPoint private immutable _entryPoint;
 
-    function initialize(address owner) public initializer {
-        _setSigner(owner);
+    /// @notice Emitted when the account is initialized with an owner
+    /// @param entryPoint The EntryPoint contract being used
+    /// @param owner The account owner
+    event SmartAccountInitialized(IEntryPoint indexed entryPoint, address indexed owner);
+
+    /// @notice Ensures only the owner or the account itself can call a function
+    modifier onlyOwner() {
+        _onlyOwner();
+        _;
     }
 
-    function _rawSignatureValidation(
-        bytes32 hash,
-        bytes calldata signature
+    /// @notice Creates a new account implementation
+    /// @param anEntryPoint The EntryPoint contract to use
+    constructor(IEntryPoint anEntryPoint) {
+        _entryPoint = anEntryPoint;
+        _disableInitializers();
+    }
+
+    /// @inheritdoc BaseAccount
+    function entryPoint() public view virtual override returns (IEntryPoint) {
+        return _entryPoint;
+    }
+
+    /// @notice Validates that the caller is either the owner or the account itself
+    function _onlyOwner() internal view {
+        require(msg.sender == owner || msg.sender == address(this), "only owner");
+    }
+
+    /// @notice Executes a transaction from this account
+    /// @param dest The destination address for the transaction
+    /// @param value The amount of ETH to send
+    /// @param func The calldata for the transaction
+    function execute(address dest, uint256 value, bytes calldata func) external {
+        _requireFromEntryPointOrOwner();
+        _call(dest, value, func);
+    }
+
+    /// @notice Initializes the account with an owner - can only be called once
+    /// @param anOwner The owner's address
+    function initialize(address anOwner) public virtual initializer {
+        owner = anOwner;
+        emit SmartAccountInitialized(_entryPoint, owner);
+    }
+
+    /// @inheritdoc BaseAccount
+    function _validateSignature(
+        PackedUserOperation calldata userOp,
+        bytes32 userOpHash
     )
         internal
-        view
         virtual
         override
-        returns (bool)
+        returns (uint256 validationData)
     {
-        address recovered = hash.recover(signature);
-        return recovered == owner();
+        if (owner != ECDSA.recover(userOpHash, userOp.signature)) {
+            return SIG_VALIDATION_FAILED;
+        }
+        return 0;
     }
 
-    function execute(
-        address target,
-        uint256 value,
-        bytes calldata data
-    )
-        external
-        onlyOwner
-        nonReentrant
-        returns (bytes memory)
-    {
+    /// @notice Ensures the caller is either the EntryPoint or the owner
+    function _requireFromEntryPointOrOwner() internal view {
+        require(msg.sender == address(entryPoint()) || msg.sender == owner, "account: not Owner or EntryPoint");
+    }
+
+    /// @notice Makes the actual call to the destination contract
+    /// @param target The address to call
+    /// @param value The amount of ETH to send
+    /// @param data The calldata to send
+    function _call(address target, uint256 value, bytes memory data) internal {
         (bool success, bytes memory result) = target.call{ value: value }(data);
-        require(success, "Transaction failed");
-
-        emit TransactionExecuted(target, value, data);
-        return result;
+        if (!success) {
+            assembly {
+                revert(add(result, 32), mload(result))
+            }
+        }
     }
 
-    function transferOwnership(address newOwner) external onlyOwner {
-        require(newOwner != address(0), "New owner is zero address");
-        address oldOwner = owner();
-        _setSigner(newOwner);
-        emit OwnershipTransferred(oldOwner, newOwner);
+    /// @inheritdoc UUPSUpgradeable
+    function _authorizeUpgrade(address newImplementation) internal view override {
+        (newImplementation);
+        _onlyOwner();
     }
 
+    /// @notice Required for receiving ETH
     receive() external payable { }
-
-    function executeERC20Transfer(address token, address to, uint256 amount) external onlyOwner {
-        require(IERC20(token).transfer(to, amount), "Token transfer failed");
-    }
-
-    function executeERC20Approve(address token, address spender, uint256 amount) external onlyOwner {
-        require(IERC20(token).approve(spender, amount), "Token approval failed");
-    }
 }

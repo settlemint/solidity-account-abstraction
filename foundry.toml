@@ -36,6 +36,5 @@ remappings_version = false
 
 [dependencies]
 forge-std = "1.9.5"
-"@openzeppelin-contracts" = "5.2.0"
+"@openzeppelin-contracts" = { version = "5.2.0", git = "https://github.com/OpenZeppelin/openzeppelin-contracts.git", branch = "master" }
 account-abstraction = { version = "0.7.0", git = "https://github.com/eth-infinitism/account-abstraction" }
-openzeppelin-community-contracts = { version = "0.0.1", git = "https://github.com/OpenZeppelin/openzeppelin-community-contracts.git", rev = "e33f73d1957e46b9ed17c319ed607bb3c7137944" }

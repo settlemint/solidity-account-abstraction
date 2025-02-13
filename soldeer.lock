@@ -1,9 +1,8 @@
 [[dependencies]]
 name = "@openzeppelin-contracts"
 version = "5.2.0"
-url = "https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts/5_2_0_11-01-2025_09:30:20_contracts.zip"
-checksum = "6dbd0440446b2ed16ca25e9f1af08fc0c5c1e73e71fee86ae8a00daa774e3817"
-integrity = "4cb7f3777f67fdf4b7d0e2f94d2f93f198b2e5dce718b7062ac7c2c83e1183bd"
+git = "https://github.com/OpenZeppelin/openzeppelin-contracts.git"
+rev = "7ccb79f6ce7c69b0c0c311235c3ce3bad99dccca"
 
 [[dependencies]]
 name = "account-abstraction"
@@ -22,4 +21,4 @@ integrity = "4753ffdfa0dde40878372b6a4d8e8fd1648b190b33996896c8b92f6f1680850f"
 name = "openzeppelin-community-contracts"
 version = "0.0.1"
 git = "https://github.com/OpenZeppelin/openzeppelin-community-contracts.git"
-rev = "e33f73d1957e46b9ed17c319ed607bb3c7137944"
+rev = "03a756ced4410403f4f11746b483c0619733c633"
