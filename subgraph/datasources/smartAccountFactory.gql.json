@@ -1,0 +1,16 @@
+[
+	{
+		"name": "SmartAccountFactory",
+		"immutable": true,
+		"fields": [
+			{
+				"name": "id",
+				"type": "ID!"
+			},
+			{
+				"name": "totalAccounts",
+				"type": "BigInt!"
+			}
+		]
+	}
+]

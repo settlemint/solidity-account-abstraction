@@ -1,8 +1,58 @@
-{
-	"entities": [
-		"SmartAccount",
-		"SmartAccountFactory",
-		"SmartAccountTransaction"
-	],
-	"module": ["smartAccount"]
-}
+[
+	{
+		"name": "SmartAccount",
+		"immutable": true,
+		"fields": [
+			{
+				"name": "id",
+				"type": "ID!"
+			},
+			{
+				"name": "owner",
+				"type": "Bytes!"
+			},
+			{
+				"name": "factory",
+				"type": "SmartAccountFactory!"
+			},
+			{
+				"name": "createdAt",
+				"type": "BigInt!"
+			},
+			{
+				"name": "transactions",
+				"type": "[SmartAccountTransaction!]!"
+			}
+		]
+	},
+	{
+		"name": "SmartAccountTransaction",
+		"immutable": true,
+		"fields": [
+			{
+				"name": "id",
+				"type": "ID!"
+			},
+			{
+				"name": "account",
+				"type": "SmartAccount!"
+			},
+			{
+				"name": "target",
+				"type": "Bytes!"
+			},
+			{
+				"name": "value",
+				"type": "BigInt!"
+			},
+			{
+				"name": "data",
+				"type": "Bytes!"
+			},
+			{
+				"name": "timestamp",
+				"type": "BigInt!"
+			}
+		]
+	}
+]

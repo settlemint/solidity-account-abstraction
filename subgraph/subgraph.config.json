@@ -1,11 +1,18 @@
 {
-	"output": "generated/subgraph.yaml",
-	"chain": "btp",
-	"datasources": {
-		"SmartAccountFactory": {
+	"output": "generated/",
+	"chain": "localhost",
+	"datasources": [
+		{
+			"name": "SmartAccountFactory",
 			"address": "0x0000000000000000000000000000000000000000",
-			"startBlock": 0,
-			"module": ["smartAccount"]
+			"startBlock": "1",
+			"module": ["smartaccount"]
+		},
+		{
+			"name": "SmartAccount",
+			"address": "0x0000000000000000000000000000000000000000",
+			"startBlock": "1",
+			"module": ["smartaccountfactory"]
 		}
-	}
+	]
 }

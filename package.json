@@ -28,13 +28,6 @@
 		"/out",
 		"/artifacts"
 	],
-	"scripts": {
-		"dependencies": "forge soldeer install",
-		"lint": "solhint --config .solhint.json ./contracts/**/*.sol",
-		"format": "forge fmt",
-		"build": "forge build --sizes",
-		"test": "forge test -vvv"
-	},
 	"dependencies": {
 		"@amxx/graphprotocol-utils": "1.2.0",
 		"@graphprotocol/graph-cli": "0.95.0",
