@@ -36,7 +36,10 @@ contract SmartAccountFactory {
     function createAccount(address owner, uint256 salt) external returns (SmartAccount ret) {
         address addr = getAddress(owner, salt);
         if (addr.code.length > 0) {
-            return SmartAccount(payable(addr));
+            ret = SmartAccount(payable(addr));
+            // Emit event even for existing accounts
+            emit AccountCreated(address(ret), owner);
+            return ret;
         }
         ret = SmartAccount(
             payable(
@@ -45,6 +48,9 @@ contract SmartAccountFactory {
                 )
             )
         );
+
+        // Emit event for new accounts
+        emit AccountCreated(address(ret), owner);
     }
 
     /// @notice Calculate the counterfactual address of an account as it would be returned by createAccount()

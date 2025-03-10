@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "account-abstraction/core/BaseAccount.sol";
@@ -76,10 +77,11 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Ini
         override
         returns (uint256 validationData)
     {
-        if (owner != ECDSA.recover(userOpHash, userOp.signature)) {
+        bytes32 hash = MessageHashUtils.toEthSignedMessageHash(userOpHash);
+        if (owner != ECDSA.recover(hash, userOp.signature)) {
             return SIG_VALIDATION_FAILED;
         }
-        return 0;
+        return SIG_VALIDATION_SUCCESS;
     }
 
     /// @notice Ensures the caller is either the EntryPoint or the owner
