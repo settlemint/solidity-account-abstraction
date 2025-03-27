@@ -20,6 +20,12 @@ contract TrustedRelayerPaymaster is BasePaymaster {
     /// @param relayer The address of the relayer
     event RelayerUntrusted(address indexed relayer);
 
+    /// @notice Error thrown when relayer is not trusted
+    error RelayerNotTrusted(address relayer);
+
+    /// @notice Error thrown when paymasterAndData format is invalid
+    error InvalidPaymasterData();
+
     /**
      * @dev Constructor
      * @param entryPoint_ The EntryPoint contract address
@@ -35,7 +41,9 @@ contract TrustedRelayerPaymaster is BasePaymaster {
     function addTrustedRelayer(address relayer) external onlyOwner {
         require(relayer != address(0), "Invalid relayer address");
         require(!trustedRelayers[relayer], "Relayer already trusted");
+
         trustedRelayers[relayer] = true;
+
         emit RelayerTrusted(relayer);
     }
 
@@ -46,6 +54,7 @@ contract TrustedRelayerPaymaster is BasePaymaster {
     function removeTrustedRelayer(address relayer) external onlyOwner {
         require(trustedRelayers[relayer], "Relayer not trusted");
         trustedRelayers[relayer] = false;
+
         emit RelayerUntrusted(relayer);
     }
 
@@ -67,19 +76,40 @@ contract TrustedRelayerPaymaster is BasePaymaster {
         override
         returns (bytes memory context, uint256 validationData)
     {
-        (userOp, userOpHash); // Unused parameters
+        bytes calldata paymasterAndData = userOp.paymasterAndData;
 
-        // Get the transaction origin (the relayer)
-        address relayer = tx.origin;
+        // paymasterAndData is encoded as follows:
+        // [paymaster address (20 bytes)][verificationGas (16 bytes)][postOpGas (16 bytes)][encoded address (min 20)]
+        // @see
+        // https://github.com/wevm/viem/blob/7f7706edefb97948233d61a0626f4b1069b455e4/src/account-abstraction/utils/userOperation/toPackedUserOperation.ts#L39
+        if (paymasterAndData.length < 20 + 16 + 16 + 20) {
+            revert InvalidPaymasterData();
+        }
 
-        // Check if the relayer is trusted
-        require(trustedRelayers[relayer], "Relayer not trusted");
+        // Skip paymaster address (20 bytes) + verification gas limit (16 bytes) + post op gas limit (16 bytes)
+        bytes calldata paymasterData = paymasterAndData[20 + 16 + 16:];
+        address dataRelayer = abi.decode(paymasterData, (address));
 
-        // Make sure we have enough deposit to cover the transaction
-        require(entryPoint.balanceOf(address(this)) >= maxCost, "Insufficient deposit");
+        // Verify tx.origin matches dataRelayer in non-simulation context
+        if (tx.origin != address(0)) {
+            if (tx.origin != dataRelayer) {
+                revert InvalidPaymasterData();
+            }
+        }
 
-        // Return the relayer address as context and successful validation (0)
-        return (abi.encode(relayer), 0);
+        if (!trustedRelayers[dataRelayer]) {
+            revert RelayerNotTrusted(dataRelayer);
+        }
+
+        // Check deposit
+        uint256 currentDeposit = entryPoint.balanceOf(address(this));
+
+        if (currentDeposit < maxCost) {
+            revert("Insufficient deposit");
+        }
+
+        // Return the relayer as context
+        return (abi.encode(dataRelayer), 0);
     }
 
     /**
@@ -96,13 +126,10 @@ contract TrustedRelayerPaymaster is BasePaymaster {
         internal
         override
     {
-        // Extract the relayer from context
+        // Try to safely decode context
         address relayer = abi.decode(context, (address));
 
-        // This is where you could implement more complex post-operation logic
-        // For example, tracking usage per relayer, etc.
-
-        // Suppress unused parameter warnings
-        (mode, relayer, actualGasCost, actualUserOpFeePerGas);
+        // Handle different post-op modes
+        if (mode == PostOpMode.opSucceeded) { } else if (mode == PostOpMode.opReverted) { } else { }
     }
 }
