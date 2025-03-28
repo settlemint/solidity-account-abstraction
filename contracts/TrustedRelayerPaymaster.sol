@@ -126,9 +126,6 @@ contract TrustedRelayerPaymaster is BasePaymaster {
         internal
         override
     {
-        // Try to safely decode context
-        address relayer = abi.decode(context, (address));
-
         // Handle different post-op modes
         if (mode == PostOpMode.opSucceeded) { } else if (mode == PostOpMode.opReverted) { } else { }
     }
