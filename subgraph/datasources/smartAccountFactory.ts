@@ -1,21 +1,30 @@
+import { BigInt as BigIntType } from "@graphprotocol/graph-ts";
 import type { AccountCreated } from "../../generated/SmartAccountFactory/SmartAccountFactory";
 import {
 	SmartAccount as SmartAccountEntity,
 	SmartAccountFactory as SmartAccountFactoryEntity,
 } from "../../generated/schema";
-import { SmartAccount as SmartAccountTemplate } from "../../generated/templates";
+import { SmartAccount } from "../../generated/templates";
 
 export function handleAccountCreated(event: AccountCreated): void {
-	let factory = SmartAccountFactoryEntity.load(event.address);
+	// Convert Address to string for entity IDs
+	let factory = SmartAccountFactoryEntity.load(event.address.toHexString());
 	if (!factory) {
-		factory = new SmartAccountFactoryEntity(event.address);
+		factory = new SmartAccountFactoryEntity(event.address.toHexString());
+		factory.totalAccounts = BigIntType.fromI32(0);
 		factory.save();
 	}
 
-	const account = new SmartAccountEntity(event.params.account);
+	const account = new SmartAccountEntity(event.params.account.toHexString());
 	account.owner = event.params.owner;
 	account.factory = factory.id;
+	account.createdAt = event.block.timestamp;
 	account.save();
 
-	SmartAccountTemplate.create(event.params.account);
+	// Increment total accounts
+	factory.totalAccounts = factory.totalAccounts.plus(BigIntType.fromI32(1));
+	factory.save();
+
+	// Create the template instance using DataSourceTemplate
+	SmartAccount.create(event.params.account);
 }

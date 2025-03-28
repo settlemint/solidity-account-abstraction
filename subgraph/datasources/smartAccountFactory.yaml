@@ -1,21 +1,20 @@
-- kind: ethereum/contract
-  name: SmartAccountFactory
-  network: settlemint
-  source:
-    address: "{address}"
-    abi: SmartAccountFactory
-    startBlock: "{startBlock}"
-  mapping:
-    kind: ethereum/events
-    apiVersion: 0.0.5
-    language: wasm/assemblyscript
-    entities:
-      - SmartAccount
-      - SmartAccountFactory
-    abis:
-      - name: SmartAccountFactory
-        file: "{root}/out/SmartAccountFactory/SmartAccountFactory.json"
-    eventHandlers:
-      - event: AccountCreated(indexed address,indexed address)
-        handler: handleAccountCreated
-    file: "{file}"
+  - kind: ethereum/contract
+    name: SmartAccountFactory
+    network: settlemint
+    source:
+      address: "{address}"
+      abi: SmartAccountFactory
+      startBlock: {startBlock}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - SmartAccount
+        - SmartAccountFactory
+      abis:
+        - name: SmartAccountFactory
+          file: "{root}/out/SmartAccountFactory.sol/SmartAccountFactory.json"
+      eventHandlers:
+        - event: AccountCreated(indexed address,indexed address)
+          handler: handleAccountCreated

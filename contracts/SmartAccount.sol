@@ -28,6 +28,12 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Ini
     /// @param owner The account owner
     event SmartAccountInitialized(IEntryPoint indexed entryPoint, address indexed owner);
 
+    /// @notice Emitted when a transaction is executed through this account
+    /// @param target The destination address for the transaction
+    /// @param value The amount of ETH sent
+    /// @param data The calldata sent to the target
+    event TransactionExecuted(address indexed target, uint256 value, bytes data);
+
     /// @notice Ensures only the owner or the account itself can call a function
     modifier onlyOwner() {
         _onlyOwner();
@@ -58,6 +64,7 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Ini
     function execute(address dest, uint256 value, bytes calldata func) external {
         _requireFromEntryPointOrOwner();
         _call(dest, value, func);
+        emit TransactionExecuted(dest, value, func);
     }
 
     /// @notice Initializes the account with an owner - can only be called once

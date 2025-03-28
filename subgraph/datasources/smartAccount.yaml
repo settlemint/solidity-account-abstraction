@@ -1,18 +1,19 @@
-- kind: ethereum/contract
-  name: SmartAccount
-  network: settlemint
-  source:
-    abi: SmartAccount
-  mapping:
-    kind: ethereum/events
-    apiVersion: 0.0.5
-    language: wasm/assemblyscript
-    entities:
-      - SmartAccountTransaction
-    abis:
-      - name: SmartAccount
-        file: "{root}/out/SmartAccount/SmartAccount.json"
-    eventHandlers:
-      - event: TransactionExecuted(indexed address,uint256,bytes)
-        handler: handleTransactionExecuted
-    file: "{file}"
+  - kind: ethereum/contract
+    name: SmartAccount
+    network: { chain }
+    source:
+      abi: SmartAccount
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SmartAccount
+      abis:
+        - name: SmartAccount
+          file: "{root}/out/SmartAccount.sol/SmartAccount.json"
+      eventHandlers:
+        - event: SmartAccountInitialized(indexed address,indexed address)
+          handler: handleAccountInitialized
+        - event: TransactionExecuted(indexed address,uint256,bytes)
+          handler: handleTransactionExecuted

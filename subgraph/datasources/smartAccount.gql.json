@@ -52,6 +52,14 @@
 			{
 				"name": "timestamp",
 				"type": "BigInt!"
+			},
+			{
+				"name": "blockNumber",
+				"type": "BigInt!"
+			},
+			{
+				"name": "transactionHash",
+				"type": "Bytes!"
 			}
 		]
 	}

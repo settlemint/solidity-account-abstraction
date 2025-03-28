@@ -1,18 +1,13 @@
 {
-	"output": "generated/",
+	"output": "generated/scs.",
 	"chain": "localhost",
 	"datasources": [
 		{
 			"name": "SmartAccountFactory",
 			"address": "0x0000000000000000000000000000000000000000",
 			"startBlock": "1",
-			"module": ["smartaccount"]
-		},
-		{
-			"name": "SmartAccount",
-			"address": "0x0000000000000000000000000000000000000000",
-			"startBlock": "1",
-			"module": ["smartaccountfactory"]
+			"module": "smartaccountfactory",
+			"templates": ["smartaccount"]
 		}
 	]
 }

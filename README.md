@@ -1,4 +1,4 @@
-![logo](https://github.com/settlemint/solidity-empty/blob/main/OG_Solidity.jpg)
+# Solidity - Account Abstraction
 
 ✨ [https://settlemint.com](https://settlemint.com) ✨
 
@@ -15,13 +15,13 @@ Launch this smart contract set in SettleMint under the `Smart Contract Sets` sec
 If you want to use it separately, bootstrap a new project using
 
 ```shell
-forge init my-project --template settlemint/solidity-empty
+forge init my-project --template settlemint/solidity-account-abstraction
 ```
 
 Or if you want to use this set as a dependency of your own,
 
 ```shell
-bun install @settlemint/solidity-empty
+bun install @settlemint/solidity-account-abstraction
 ```
 
 ## DX: Foundry & Hardhat hybrid
