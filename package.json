@@ -1,6 +1,6 @@
 {
 	"name": "@settlemint/solidity-account-abstraction",
-	"description": "Empty smart contract set to use in SettleMint",
+	"description": "Account abstraction smart contract set to use in SettleMint",
 	"version": "7.12.1",
 	"private": false,
 	"license": "FSL-1.1-MIT",
