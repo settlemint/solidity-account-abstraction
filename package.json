@@ -1,5 +1,5 @@
 {
-	"name": "@settlemint/solidity-empty",
+	"name": "@settlemint/solidity-account-abstraction",
 	"description": "Empty smart contract set to use in SettleMint",
 	"version": "7.12.1",
 	"private": false,
@@ -9,13 +9,13 @@
 		"email": "support@settlemint.com",
 		"url": "https://settlemint.com"
 	},
-	"homepage": "https://github.com/settlemint/solidity-empty/blob/main/README.md",
+	"homepage": "https://github.com/settlemint/solidity-account-abstraction/blob/main/README.md",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/settlemint/solidity-empty.git"
+		"url": "git+https://github.com/settlemint/solidity-account-abstraction.git"
 	},
 	"bugs": {
-		"url": "https://github.com/settlemint/solidity-empty/issues",
+		"url": "https://github.com/settlemintsolidity-account-abstraction/issues",
 		"email": "support@settlemint.com"
 	},
 	"keywords": ["solidity", "subgraph", "blockchain-transformation"],
