@@ -1,12 +1,12 @@
-# Solidity - Account Abstraction
+![logo](https://github.com/settlemint/solidity-account-abstraction/blob/main/OG_Solidity.png)
 
 ✨ [https://settlemint.com](https://settlemint.com) ✨
 
 Build your own blockchain usecase with ease.
 
-[![CI status](https://github.com/settlemint/solidity-empty/actions/workflows/solidity.yml/badge.svg?event=push&branch=main)](https://github.com/settlemint/solidity-empty/actions?query=branch%3Amain) [![License](https://img.shields.io/npm/l/@settlemint/solidity-empty)](https://fsl.software) [![npm](https://img.shields.io/npm/dw/@settlemint/solidity-empty)](https://www.npmjs.com/package/@settlemint/solidity-empty) [![stars](https://img.shields.io/github/stars/settlemint/solidity-empty)](https://github.com/settlemint/solidity-empty)
+[![CI status](https://github.com/settlemint/solidity-account-abstraction/actions/workflows/solidity.yml/badge.svg?event=push&branch=main)](https://github.com/settlemint/solidity-account-abstraction/actions?query=branch%3Amain) [![License](https://img.shields.io/npm/l/@settlemint/solidity-account-abstraction)](https://fsl.software) [![npm](https://img.shields.io/npm/dw/@settlemint/solidity-account-abstraction)](https://www.npmjs.com/package/@settlemint/solidity-account-abstraction) [![stars](https://img.shields.io/github/stars/settlemint/solidity-account-abstraction)](https://github.com/settlemint/solidity-account-abstraction)
 
-[Documentation](https://console.settlemint.com/documentation/) • [Discord](https://discord.com/invite/Mt5yqFrey9) • [NPM](https://www.npmjs.com/package/@settlemint/solidity-empty) • [Issues](https://github.com/settlemint/solidity-empty/issues)
+[Documentation](https://console.settlemint.com/documentation/) • [Discord](https://discord.com/invite/Mt5yqFrey9) • [NPM](https://www.npmjs.com/package/@settlemint/solidity-account-abstraction) • [Issues](https://github.com/settlemint/solidity-account-abstraction/issues)
 
 ## Get started
 
