@@ -60,7 +60,7 @@ contract SmartAccountTest is Test {
         assertEq(address(account).balance, 0.9 ether);
     }
 
-    function testFailExecutionByNonOwner() public {
+    function test_RevertWhen_NonOwnerExecutesTransaction() public {
         uint256 salt = 0;
         address accountAddress = address(factory.createAccount(owner, salt));
         SmartAccount account = SmartAccount(payable(accountAddress));
