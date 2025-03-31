@@ -6,8 +6,8 @@
 			"name": "SmartAccountFactory",
 			"address": "0x0000000000000000000000000000000000000000",
 			"startBlock": "1",
-			"module": "smartaccountfactory",
-			"templates": ["smartaccount"]
+			"module": "smartAccountFactory",
+			"templates": ["smartAccount"]
 		}
 	]
 }
