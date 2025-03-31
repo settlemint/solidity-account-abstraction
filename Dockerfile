@@ -25,6 +25,7 @@ USER root
 
 RUN bun install --save-text-lockfile
 RUN if [ -f "scripts/decompress.js" ]; then bun scripts/decompress.js; fi
+RUN forge soldeer update
 RUN forge build
 RUN bun hardhat compile
 
