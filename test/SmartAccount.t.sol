@@ -67,6 +67,7 @@ contract SmartAccountTest is Test {
 
         // Try to execute as non-owner
         vm.prank(other);
+        vm.expectRevert("account: not Owner or EntryPoint");
         account.execute(other, 0, "");
     }
 
