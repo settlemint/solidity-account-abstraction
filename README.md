@@ -1,4 +1,4 @@
-![logo](https://github.com/settlemint/solidity-account-abstraction/blob/main/OG_Solidity.png)
+![logo](https://github.com/settlemint/solidity-account-abstraction/blob/main/OG_Solidity.jpg)
 
 ✨ [https://settlemint.com](https://settlemint.com) ✨
 
