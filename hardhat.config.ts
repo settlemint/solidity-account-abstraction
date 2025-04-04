@@ -12,10 +12,13 @@ const config: HardhatUserConfig = {
 				enabled: true,
 				runs: 10_000,
 			},
+			evmVersion: "cancun",
 		},
 	},
 	networks: {
-		hardhat: {},
+		hardhat: {
+			hardfork: "cancun",
+		},
 		btp: {
 			url: process.env.BTP_RPC_URL || "",
 			gasPrice: process.env.BTP_GAS_PRICE

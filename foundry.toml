@@ -30,6 +30,7 @@
   auto_detect_solc = false
   extra_output_files = [ "metadata" ]
   viaIR = true
+  evm_version = "cancun"
 
 # Soldeer configuration
 [soldeer]
