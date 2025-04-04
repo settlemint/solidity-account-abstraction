@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "account-abstraction/core/BaseAccount.sol";
 import "account-abstraction/core/Helpers.sol";
-import "account-abstraction/samples/callback/TokenCallbackHandler.sol";
+import "account-abstraction/accounts/callback/TokenCallbackHandler.sol";
 
 /**
  * @title SmartAccount
@@ -61,8 +61,8 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Ini
     /// @param dest The destination address for the transaction
     /// @param value The amount of ETH to send
     /// @param func The calldata for the transaction
-    function execute(address dest, uint256 value, bytes calldata func) external {
-        _requireFromEntryPointOrOwner();
+    function execute(address dest, uint256 value, bytes calldata func) external override {
+        _requireForExecute();
         _call(dest, value, func);
         emit TransactionExecuted(dest, value, func);
     }
@@ -70,6 +70,10 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Ini
     /// @notice Initializes the account with an owner - can only be called once
     /// @param anOwner The owner's address
     function initialize(address anOwner) public virtual initializer {
+        _initialize(anOwner);
+    }
+
+    function _initialize(address anOwner) internal virtual {
         owner = anOwner;
         emit SmartAccountInitialized(_entryPoint, owner);
     }
@@ -84,15 +88,15 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Ini
         override
         returns (uint256 validationData)
     {
-        bytes32 hash = MessageHashUtils.toEthSignedMessageHash(userOpHash);
-        if (owner != ECDSA.recover(hash, userOp.signature)) {
+        // UserOpHash can be generated using eth_signTypedData_v4
+        if (owner != ECDSA.recover(userOpHash, userOp.signature)) {
             return SIG_VALIDATION_FAILED;
         }
         return SIG_VALIDATION_SUCCESS;
     }
 
     /// @notice Ensures the caller is either the EntryPoint or the owner
-    function _requireFromEntryPointOrOwner() internal view {
+    function _requireForExecute() internal view virtual override {
         require(msg.sender == address(entryPoint()) || msg.sender == owner, "account: not Owner or EntryPoint");
     }
 
@@ -117,4 +121,27 @@ contract SmartAccount is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Ini
 
     /// @notice Required for receiving ETH
     receive() external payable { }
+
+    /**
+     * check current account deposit in the entryPoint
+     */
+    function getDeposit() public view returns (uint256) {
+        return entryPoint().balanceOf(address(this));
+    }
+
+    /**
+     * deposit more funds for this account in the entryPoint
+     */
+    function addDeposit() public payable {
+        entryPoint().depositTo{ value: msg.value }(address(this));
+    }
+
+    /**
+     * withdraw value from the account's deposit
+     * @param withdrawAddress target to send to
+     * @param amount to withdraw
+     */
+    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlyOwner {
+        entryPoint().withdrawTo(withdrawAddress, amount);
+    }
 }
