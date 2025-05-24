@@ -7,9 +7,9 @@ integrity = "4cb7f3777f67fdf4b7d0e2f94d2f93f198b2e5dce718b7062ac7c2c83e1183bd"
 
 [[dependencies]]
 name = "account-abstraction"
-version = "0.7.0"
+version = "0.8.0"
 git = "https://github.com/eth-infinitism/account-abstraction"
-rev = "4b9a3ecfb63c3342218f2ba0226e19be16e022ac"
+rev = "4cbc06072cdc19fd60f285c5997f4f7f57a588de"
 
 [[dependencies]]
 name = "forge-std"
