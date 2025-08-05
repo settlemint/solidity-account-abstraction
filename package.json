@@ -1,7 +1,7 @@
 {
   "name": "@settlemint/solidity-account-abstraction",
   "description": "ERC4337 Account Abstraction: The technical standard for establishing on-chain accounts with optional sponsored transactions.",
-  "version": "8.0.9",
+  "version": "8.0.10",
   "private": false,
   "license": "FSL-1.1-MIT",
   "author": {
