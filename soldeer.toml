@@ -5,5 +5,4 @@
   # Core dependencies
   forge-std = "1.9.5"
   "@openzeppelin-contracts" = "5.2.0"
-  # Pinned to specific commit to avoid breaking changes, https://github.com/eth-infinitism/account-abstraction/commit/b3bae63bd9bc0ed394dfca8668008213127adb62 doesn't work on Paris (TransientSlot.sol)
-  account-abstraction = { version = "0.7.0", git = "https://github.com/eth-infinitism/account-abstraction", rev = "4b9a3ecfb63c3342218f2ba0226e19be16e022ac" }
+  account-abstraction = { version = "0.8.0", git = "https://github.com/eth-infinitism/account-abstraction", rev="v0.8.0" }
